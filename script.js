@@ -1,3 +1,9 @@
+let gallery = document.querySelector(".gallery");
+gallery.addEventListener("click", () => {
+    location.assign("./gallery.html");
+});
+
+let uid=new ShortUniqueId();
 let video = document.querySelector("video");
 let captureBtnCont = document.querySelector(".capture-btn-cont");
 let captureBtn = document.querySelector(".capture-btn");
@@ -37,6 +43,21 @@ navigator.mediaDevices.getUserMedia(constraints)//The Navigator.mediaDevices rea
         // download video on desktop
         let videoURL = URL.createObjectURL(blob);
         console.log(videoURL);
+
+        if(db){
+            let videoId=uid();
+            let dbTransaction=db.transaction("video","readwrite");
+            let videoStore=dbTransaction.objectStore("video");
+            let videoEntry={
+                id:`vid-${videoId}`,
+                url:videoURL,
+            };
+    
+            let addRequest=videoStore.add(videoEntry);
+            addRequest.onsuccess=()=>{
+                console.log("image added to db successfully");
+            }
+        }
         
         // let a = document.createElement('a');
         // a.href = videoURL;
@@ -64,9 +85,24 @@ captureBtnCont.addEventListener("click", () => {
     tool.fillRect(0, 0, canvas.width, canvas.height);
 
     let imageURL = canvas.toDataURL();
-    let img = document.createElement("img");
-    img.src = imageURL;
-    document.body.append(img);
+    // let img = document.createElement("img");
+    // img.src = imageURL;
+    // document.body.append(img);
+
+    if(db){
+        let imageId=uid();
+        let dbTransaction=db.transaction("image","readwrite");
+        let imageStore=dbTransaction.objectStore("image");
+        let imageEntry={
+            id:`img-${imageId}`,
+            url:imageURL,
+        };
+
+        let addRequest=imageStore.add(imageEntry);
+        addRequest.onsuccess=()=>{
+            console.log("image added to db successfully");
+        }
+    }
     setTimeout(() => {
         captureBtn.classList.remove("scale-capture");
     }, 510);
@@ -150,7 +186,7 @@ allFilters.forEach((filterElem) => {
         //The Window.getComputedStyle() method returns an object containing the values of all CSS properties of an element
 
         //The CSSStyleDeclaration.getPropertyValue() method interface returns a string containing the value of a specified CSS property.
-        
+
         filterLayer.style.backgroundColor = transparentColor;
     })
 })
