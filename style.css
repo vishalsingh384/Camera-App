@@ -56,16 +56,18 @@
  }
 
  .timer-cont{
-     position: absolute;
-    bottom: 10rem;
+    position: absolute;
+    bottom: 7rem;
     color: white;
     /* font-size: 1rem; */
     left: 3rem;
     z-index: 2;
- }
+    font-size: 0.7rem;
+    font-family: Arial;
+}
 
  .timer{
-     display: none;
+     display: block;
  }
 
 
