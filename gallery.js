@@ -66,4 +66,55 @@ setTimeout(()=>{
     }   
 },100);
 
+function deleteListener(e){
+    let id=e.target.parentElement.getAttribute("id");
+    let type=id.split("-")[0];
+    if(type=="vid"){
+        //removing from databse
+        let videoDBTransaction=db.transaction("video","readwrite");
+        let videoStore=videoDBTransaction.objectStore("video");
+        videoStore.delete(id);
+    }else if(type=="img"){
+        let imageDBTransacrtion = db.transaction("image", "readwrite");
+        let imageStore = imageDBTransacrtion.objectStore("image");
+        imageStore.delete(id);
+    }
+
+    e.target.parentElement.remove();
+}
+
+
+function downloadListener(e){
+    let id=e.target.parentElement.getAttribute("id");
+    let type=id.split("-")[0];
+    if(type=="vid"){
+        let videoDBTransacrtion = db.transaction("video", "readonly");
+        let videoStore = videoDBTransacrtion.objectStore("video");
+        let videoRequest=videoStore.get(id);
+        videoRequest.onsuccess=()=>{
+            let videoResult=videoRequest.result;
+            let url=URL.createObjectURL(videoResult.blobData);
+
+            let a=document.createElement("a");
+            a.href=url;
+            a.download="video.mp4";
+            a.click();
+        }  
+    }
+
+    if(type=="img"){
+        let imageDBTransacrtion = db.transaction("image", "readonly");
+        let imageStore = imageDBTransacrtion.objectStore("image");
+        let imageRequest=imageStore.get(id);
+        imageRequest.onsuccess=()=>{
+            let imageResult=imageRequest.result;
+            let url=URL.createObjectURL(imageResult.blobData);
+
+            let a=document.createElement("a");
+            a.href=url;
+            a.download="image.png";
+            a.click();
+        }  
+    }
+}
 
