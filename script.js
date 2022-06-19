@@ -44,7 +44,7 @@ navigator.mediaDevices.getUserMedia(constraints)//The Navigator.mediaDevices rea
         // let videoURL = URL.createObjectURL(blob);
         // console.log(videoURL);
 
-        //store in database
+        //storing in database
         if(db){
             let videoId=uid();
             let dbTransaction=db.transaction("video","readwrite");
@@ -89,6 +89,7 @@ captureBtnCont.addEventListener("click", () => {
     // img.src = imageURL;
     // document.body.append(img);
 
+    //storing in database
     if(db){
         let imageId=uid();
         let dbTransaction=db.transaction("image","readwrite");

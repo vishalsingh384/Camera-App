@@ -82,7 +82,7 @@ function deleteListener(e){
         imageStore.delete(id);
     }
 
-    e.target.parentElement.remove();
+     e.target.parentElement.remove();
 }
 
 
