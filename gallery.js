@@ -17,7 +17,7 @@ setTimeout(()=>{
                 imageElem.setAttribute("id",imageObj.id);
                 let url=imageObj.url;
                 imageElem.innerHTML = `
-                <div class="media>
+                <div class="media">
                 <img src="${url}"/>
                 </div>
                 <div class="delete action-btn">DELETE</div>
@@ -44,7 +44,9 @@ setTimeout(()=>{
                 let videoElem=document.createElement("div");
                 videoElem.setAttribute("class","media-cont");
                 videoElem.setAttribute("id",videoObj.id);
-                let url=URL.createObjectURL(videoObj.blobData);
+                // console.log(videoObj.url);
+                let url=URL.createObjectURL(videoObj.url);
+                // let url=videoObj.url;
         
                 videoElem.innerHTML=`
                 <div class="media">
@@ -56,10 +58,10 @@ setTimeout(()=>{
         
               galleryCont.appendChild(videoElem);
         
-              let deleteBtn=imageElem.querySelector(".delete");
+              let deleteBtn=videoElem.querySelector(".delete");
               deleteBtn.addEventListener("click",deleteListener);
           
-              let downloadBtn=imageElem.querySelector(".download");
+              let downloadBtn=videoElem.querySelector(".download");
               downloadBtn.addEventListener("click",downloadListener);
             });
         };    
@@ -93,7 +95,7 @@ function downloadListener(e){
         let videoRequest=videoStore.get(id);
         videoRequest.onsuccess=()=>{
             let videoResult=videoRequest.result;
-            let url=URL.createObjectURL(videoResult.blobData);
+            let url=URL.createObjectURL(videoResult.url);
 
             let a=document.createElement("a");
             a.href=url;
@@ -108,7 +110,7 @@ function downloadListener(e){
         let imageRequest=imageStore.get(id);
         imageRequest.onsuccess=()=>{
             let imageResult=imageRequest.result;
-            let url=URL.createObjectURL(imageResult.blobData);
+            let url=imageResult.url;
 
             let a=document.createElement("a");
             a.href=url;

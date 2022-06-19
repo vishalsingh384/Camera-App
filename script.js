@@ -41,21 +41,22 @@ navigator.mediaDevices.getUserMedia(constraints)//The Navigator.mediaDevices rea
         let blob = new Blob(chunks, { type: 'video/mp4' });
         console.log('rec stopped');
         // download video on desktop
-        let videoURL = URL.createObjectURL(blob);
-        console.log(videoURL);
+        // let videoURL = URL.createObjectURL(blob);
+        // console.log(videoURL);
 
+        //store in database
         if(db){
             let videoId=uid();
             let dbTransaction=db.transaction("video","readwrite");
             let videoStore=dbTransaction.objectStore("video");
             let videoEntry={
                 id:`vid-${videoId}`,
-                url:videoURL,
+                url:blob,
             };
     
             let addRequest=videoStore.add(videoEntry);
             addRequest.onsuccess=()=>{
-                console.log("image added to db successfully");
+                console.log("video added to db successfully");
             }
         }
         
@@ -63,7 +64,6 @@ navigator.mediaDevices.getUserMedia(constraints)//The Navigator.mediaDevices rea
         // a.href = videoURL;
         // a.download = "myVideo.mp4";
         // a.click();
-        //store in database
     });
 
 
@@ -138,7 +138,7 @@ recordBtnCont.addEventListener("click", () => {
 
 let timer = document.querySelector('.timer');
 
-let counter = 3590;
+let counter = 0;
 let timerID;
 function startTimer() {
     timer.style.display = 'block';
@@ -165,7 +165,7 @@ function startTimer() {
         counter++;
     }
     timerID = setInterval(displayTimer, 1000);
-    counter = 3650;
+    counter = 0;
 }
 
 function stopTimer() {
